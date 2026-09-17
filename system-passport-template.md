@@ -261,30 +261,6 @@ H/W path         Устройство  Класс     Описание
 
 ## 7. SMART и тип накопителя
 
-Сначала определить имя накопителя:
-
-```bash
-lsblk -d -o NAME,MODEL,SIZE,ROTA,TYPE
-```
-
-<details>
-<summary>Вывод команды</summary>
-
-```text
-ВСТАВИТЬ ВЫВОД СЮДА
-```
-
-</details>
-
-После этого выполнить команду для нужного устройства.
-
-Например, для `/dev/sda`:
-
-```bash
-sudo smartctl -a /dev/sda
-```
-
-Или для NVMe:
 
 ```bash
 sudo smartctl -a /dev/nvme0n1
@@ -294,7 +270,70 @@ sudo smartctl -a /dev/nvme0n1
 <summary>Вывод SMART</summary>
 
 ```text
-ВСТАВИТЬ ВЫВОД СЮДА
+Copyright (C) 2002-23, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Model Number:                       GIGABYTE AG450E1024-SI
+Serial Number:                      46F1073C097000035595
+Firmware Version:                   ELFMH0.1
+PCI Vendor/Subsystem ID:            0x1987
+IEEE OUI Identifier:                0x6479a7
+Controller ID:                      0
+NVMe Version:                       1.4
+Number of Namespaces:               1
+Namespace 1 Size/Capacity:          1 024 209 543 168 [1,02 TB]
+Namespace 1 Formatted LBA Size:     512
+Namespace 1 IEEE EUI-64:            6479a7 878ac007fd
+Local Time is:                      Thu Sep 17 17:03:35 2026 MSK
+Firmware Updates (0x12):            1 Slot, no Reset required
+Optional Admin Commands (0x0017):   Security Format Frmw_DL Self_Test
+Optional NVM Commands (0x00df):     Comp Wr_Unc DS_Mngmt Wr_Zero Sav/Sel_Feat Timestmp Verify
+Log Page Attributes (0x1e):         Cmd_Eff_Lg Ext_Get_Lg Telmtry_Lg Pers_Ev_Lg
+Maximum Data Transfer Size:         64 Pages
+Warning  Comp. Temp. Threshold:     83 Celsius
+Critical Comp. Temp. Threshold:     85 Celsius
+Namespace 1 Features (0x08):        No_ID_Reuse
+
+Supported Power States
+St Op     Max   Active     Idle   RL RT WL WT  Ent_Lat  Ex_Lat
+ 0 +     5.00W       -        -    0  0  0  0        0       0
+ 1 +     3.00W       -        -    1  1  1  1        0       0
+ 2 +     1.50W       -        -    2  2  2  2        0       0
+ 3 -   0.0300W       -        -    3  3  3  3     5000    2500
+ 4 -   0.0025W       -        -    4  4  4  4     8000   40000
+
+Supported LBA Sizes (NSID 0x1)
+Id Fmt  Data  Metadt  Rel_Perf
+ 0 +     512       0         1
+ 1 -    4096       0         0
+
+=== START OF SMART DATA SECTION ===
+SMART overall-health self-assessment test result: PASSED
+
+SMART/Health Information (NVMe Log 0x02)
+Critical Warning:                   0x00
+Temperature:                        35 Celsius
+Available Spare:                    100%
+Available Spare Threshold:          5%
+Percentage Used:                    8%
+Data Units Read:                    169 445 027 [86,7 TB]
+Data Units Written:                 159 972 822 [81,9 TB]
+Host Read Commands:                 1 595 763 532
+Host Write Commands:                1 335 644 068
+Controller Busy Time:               6 397
+Power Cycles:                       3 037
+Power On Hours:                     7 326
+Unsafe Shutdowns:                   51
+Media and Data Integrity Errors:    0
+Error Information Log Entries:      43
+Warning  Comp. Temperature Time:    0
+Critical Comp. Temperature Time:    0
+Temperature Sensor 1:               35 Celsius
+
+Error Information (NVMe Log 0x01, 16 of 255 entries)
+No Errors Logged
+
+Read Self-test Log failed: Invalid Field in Command (0x002)
 ```
 
 </details>
@@ -303,17 +342,17 @@ sudo smartctl -a /dev/nvme0n1
 
 ## 8. Вращающийся или невращающийся накопитель
 
-Заменить `sdX` на имя устройства, например `sda` или `nvme0n1`.
+
 
 ```bash
-cat /sys/block/sdX/queue/rotational
+cat /sys/block/nvme0n1/queue/rotational
 ```
 
 <details>
 <summary>Вывод команды</summary>
 
 ```text
-ВСТАВИТЬ ВЫВОД СЮДА
+0
 ```
 
 </details>
@@ -337,7 +376,7 @@ nproc
 <summary>Вывод команды</summary>
 
 ```text
-ВСТАВИТЬ ВЫВОД СЮДА
+20
 ```
 
 </details>
@@ -356,18 +395,16 @@ numactl --hardware
 <summary>Вывод команды</summary>
 
 ```text
-ВСТАВИТЬ ВЫВОД СЮДА
+available: 1 nodes (0)
+node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
+node 0 size: 15694 MB
+node 0 free: 7585 MB
+node distances:
+node   0 
+  0:  10 
+
 ```
 
 </details>
 
 ---
-
-## Дополнительно
-
-Если необходимые утилиты отсутствуют:
-
-```bash
-sudo apt update
-sudo apt install lshw smartmontools numactl
-```
